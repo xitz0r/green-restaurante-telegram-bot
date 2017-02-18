@@ -11,8 +11,9 @@ def get_today_soup(bot, update):
 
 def start(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id,
-                    text='Fala galera da sopa! '
-                         'Não precisa mais ficar olhando o site do green pra ver a sopa, deixa comigo!')
+                    text='Fala galera da sopa!\n\n'
+                         'Não precisa mais ficar olhando o site do green pra ver a sopa, deixa comigo!\n\n'
+                         'Se precisarem é só digitar /soup')
 
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
