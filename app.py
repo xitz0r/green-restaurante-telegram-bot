@@ -6,7 +6,7 @@ from telegram.ext import CommandHandler, Updater
 
 def get_today_soup(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id,
-                    text='A sopa cadastrada no site agora é %s' % soup.get_soup())
+                    text='A sopa cadastrada no site neste momento é %s' % soup.get_soup())
 
 
 def start(bot, update):
