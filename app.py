@@ -1,7 +1,24 @@
+import asyncio
 import logging
 import soup
 import sys
 from telegram.ext import CommandHandler, Updater
+
+
+daily_soup = ''
+
+
+async def check_daily_soup(bot, group_chat_id):
+    global daily_soup
+    new_soup = soup.get_soup()
+
+    if daily_soup != new_soup:
+        daily_soup = new_soup
+        bot.sendMessage(chat_id=group_chat_id,
+                        text='Nova sopa no site!\n%s"' % daily_soup)
+        await asyncio.sleep(43200)
+    else:
+        await asyncio.sleep(180)
 
 
 def get_today_soup(bot, update):
@@ -19,6 +36,7 @@ def start(bot, update):
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 TOKEN = sys.argv[1]
+GROUP_ID = sys.argv[2]
 
 COMMAND_HANDLERS = {'soup': get_today_soup, 'start': start}
 
@@ -30,5 +48,9 @@ for key in COMMAND_HANDLERS:
     dispatcher.add_handler(handler=CommandHandler(command=key, callback=COMMAND_HANDLERS[key]))
 
 updater.start_polling()
+
+# starting coroutine
+loop = asyncio.get_event_loop()
+loop.run_until_complete(check_daily_soup(bot=dispatcher.bot, group_chat_id=GROUP_ID))
 
 print('Listening ...')
