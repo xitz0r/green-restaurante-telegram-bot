@@ -8,7 +8,8 @@ from telegram.ext import CommandHandler, Updater
 daily_soup = ''
 
 
-async def check_daily_soup(bot, group_chat_id):
+@asyncio.coroutine
+def check_daily_soup(bot, group_chat_id):
     global daily_soup
     new_soup = soup.get_soup()
 
@@ -16,9 +17,11 @@ async def check_daily_soup(bot, group_chat_id):
         daily_soup = new_soup
         bot.sendMessage(chat_id=group_chat_id,
                         text='Nova sopa no site!\n%s"' % daily_soup)
-        await asyncio.sleep(43200)
+        yield from asyncio.sleep(43200)
+        asyncio.async(check_daily_soup(bot, group_chat_id))
     else:
-        await asyncio.sleep(180)
+        yield from asyncio.sleep(300)
+        asyncio.async(check_daily_soup(bot, group_chat_id))
 
 
 def get_today_soup(bot, update):
@@ -49,8 +52,9 @@ for key in COMMAND_HANDLERS:
 
 updater.start_polling()
 
+print('Listening ...')
+
 # starting coroutine
 loop = asyncio.get_event_loop()
-loop.run_until_complete(check_daily_soup(bot=dispatcher.bot, group_chat_id=GROUP_ID))
-
-print('Listening ...')
+asyncio.async(check_daily_soup(bot=dispatcher.bot, group_chat_id=GROUP_ID))
+loop.run_forever()
