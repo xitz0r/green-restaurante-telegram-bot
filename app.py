@@ -16,7 +16,7 @@ def check_daily_soup(bot, group_chat_id):
     if daily_soup != new_soup:
         daily_soup = new_soup
         bot.sendMessage(chat_id=group_chat_id,
-                        text='Nova sopa no site!\n%s"' % daily_soup)
+                        text='Nova sopa no site!\n%s' % daily_soup)
         yield from asyncio.sleep(43200)
         asyncio.async(check_daily_soup(bot, group_chat_id))
     else:
