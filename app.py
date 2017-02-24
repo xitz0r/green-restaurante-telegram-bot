@@ -6,18 +6,20 @@ from telegram.ext import CommandHandler, Updater
 
 
 daily_soup = ''
+daily_juice = ''
 
 
 @asyncio.coroutine
 def check_daily_soup(bot, group_chat_id, show_first_soup):
     global daily_soup
-    new_soup = soup.get_soup()
+    new_soup, new_juice = soup.get_soup_and_juice()
 
     if daily_soup != new_soup:
         daily_soup = new_soup
+        daily_juice = new_juice
         if show_first_soup:
             bot.sendMessage(chat_id=group_chat_id,
-                            text='Nova sopa no site!\n%s' % daily_soup)
+                            text='Nova sopa no site!\n%s\nE o refresco é %s' % (daily_soup, daily_juice))
         yield from asyncio.sleep(43200)
     else:
         yield from asyncio.sleep(300)
@@ -25,8 +27,9 @@ def check_daily_soup(bot, group_chat_id, show_first_soup):
 
 
 def get_today_soup(bot, update):
+    new_soup, new_juice = soup.get_soup_and_juice()
     bot.sendMessage(chat_id=update.message.chat_id,
-                    text='A sopa cadastrada no site neste momento é %s' % soup.get_soup())
+                    text='A sopa cadastrada no site neste momento é %s\nO refresco é %s' % (new_soup, new_juice))
 
 
 def start(bot, update):
