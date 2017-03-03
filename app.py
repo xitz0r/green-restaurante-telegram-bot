@@ -17,7 +17,7 @@ def check_daily_soup(bot, group_chat_id, show_first_soup):
     if daily_soup != new_soup:
         daily_soup = new_soup
         daily_juice = new_juice
-        if show_first_soup:
+        if daily_soup != '' or show_first_soup:
             bot.sendMessage(chat_id=group_chat_id,
                             text='Nova sopa no site!\n%s\nE o refresco é %s' % (daily_soup, daily_juice))
         yield from asyncio.sleep(43200)
