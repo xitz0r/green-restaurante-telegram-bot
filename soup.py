@@ -10,12 +10,18 @@ def get_soup_and_juice():
     juice = ''
 
     for item in menu_items:
-        if item.xpath('span/strong/text()')[0] == 'SOPA':
+        if item.xpath('span/strong/text()')[0].upper() == 'SOPA':
             soup = item.xpath('span[@class="description"]/text()')[0]
+
+    if soup == '':
+        menu_items = tree.xpath('//div[@class="col-md-10 col-md-offset-1 menu-category-group"]')
+        for item in menu_items:
+            if 'SOPA' in item.xpath('h2/text()')[0].upper():
+                soup = item.xpath('section[@class="menu-item"]/span[@class="title"]/strong/text()')[0]
 
     menu_items = tree.xpath('//div[@class="col-md-10 col-md-offset-1 menu-category-group"]')
     for item in menu_items:
-        if item.xpath('h2/text()')[0] == 'Refresco do dia ':
+        if item.xpath('h2/text()')[0].upper() == 'REFRESCO DO DIA ':
             juice = item.xpath('section/span[@class="title"]/strong/text()')[0]
 
     return soup, juice
