@@ -23,7 +23,7 @@ def check_daily_soup(bot, group_chat_id, show_first_soup):
         yield from asyncio.sleep(43200)
     else:
         yield from asyncio.sleep(300)
-    asyncio.async(check_daily_soup(bot, group_chat_id), show_first_soup)
+    asyncio.async(check_daily_soup(bot, group_chat_id, show_first_soup))
 
 
 def get_today_soup(bot, update):
